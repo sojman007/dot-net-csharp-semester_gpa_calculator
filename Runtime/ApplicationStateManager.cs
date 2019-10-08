@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MyCustomApplication.Manager;
 
 namespace MyCustomApplication.Runtime
 {
@@ -12,6 +13,7 @@ namespace MyCustomApplication.Runtime
         private bool isUserInSettingsPage = false;
         private bool isUserInAboutPage = false;
         private bool recordingUserData = false;
+        private Student[] allStudentData;
 
         public bool getRecordingUserData() => recordingUserData;
         internal void setRecordingUserData(bool value) => recordingUserData = value;

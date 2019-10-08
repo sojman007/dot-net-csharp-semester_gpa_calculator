@@ -10,13 +10,10 @@ namespace MyCustomApplication.Runtime
             
             Menu MyMenu = new Menu();
 
-            while (MyMenu._.getUserInSession() == true)
+            while (MyMenu.GetApplicationState().getUserInSession() == true)
 
             {
                 Console.Clear();
-                Console.WriteLine("\t_____________________________________________");
-                Console.WriteLine("\t |SEMESTER \t GPA \t CALCULATOR|.v01");
-                Console.WriteLine("\t---------------------------------------------\n");
                 MyMenu.DisplayMainMenu();
                
                 } 

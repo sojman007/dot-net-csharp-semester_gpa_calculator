@@ -7,23 +7,25 @@ namespace MyCustomApplication.Runtime
 {
     class Menu
     {
-        public ApplicationStateManager _;
+        private readonly ApplicationStateManager _AppState;
+        public ApplicationStateManager GetApplicationState()=>  _AppState; 
         public Menu()
         {
-            _ = new ApplicationStateManager();
-            _.setUserInSession(true);
+            _AppState = new ApplicationStateManager();
+            _AppState.setUserInSession(true);
         }
         public bool DisplayMainMenu()
         {
-            //Console.Clear();
+            
+            DisplayBanner();
             Console.WriteLine(" MAIN MENU" + "\nPlease type an Option Below:" +
-                " \n * Launch Grade Calculator (G)*" +
+                " \n * Launch Grade Calculator (G) *" +
                 " \n * Settings (S) *" +
                 " \n * About (A) *" +
                 " \n * Exit (E) *");
             switch (Console.ReadLine())
             {
-                case "G":
+                case "G":                                            
                     DisplayGradeCalculatorMenu();
                     break;
 
@@ -36,7 +38,7 @@ namespace MyCustomApplication.Runtime
                     break;
 
                 case "E":
-                    _.setUserInSession(false);
+                    _AppState.setUserInSession(false);
                     break;
 
             }
@@ -47,14 +49,11 @@ namespace MyCustomApplication.Runtime
         public void DisplayGradeCalculatorMenu()
         {
 
-            _.setUserInGradeCalculator(true);
-            while (_.getIsUserInGradeCalculator() == true && _.getUserInSession()==true)
+            _AppState.setUserInGradeCalculator(true);
+            while (_AppState.getIsUserInGradeCalculator() == true && _AppState.getUserInSession()==true)
             {
                 Console.Clear();
-                Console.WriteLine("\t_____________________________________________");
-                Console.WriteLine("\t |SEMESTER \t GPA \t CALCULATOR|.v01");
-                Console.WriteLine("\t---------------------------------------------\n");
-
+                DisplayBanner();
                 Console.WriteLine("\n GRADE CALCULATOR: Please Select an Option (upper case only) " +
                     " \n * Record Your Details [N] * " +
                     " \n * View Saved Data [V] *" +
@@ -68,13 +67,13 @@ namespace MyCustomApplication.Runtime
                         recordUserData();
                         break;
                     case "V":
-                        Console.WriteLine("View Data");
+                        viewData();
                         break;
                     case "C":
                         Console.WriteLine("Calculate GPA");
                         break;
                     case "B":
-                        _.setUserInGradeCalculator(false);
+                        _AppState.setUserInGradeCalculator(false);
                         break;
 
                 }
@@ -83,23 +82,27 @@ namespace MyCustomApplication.Runtime
             }
   
         }
+        void DisplayBanner()
+        {
+            Console.WriteLine("\t_____________________________________________");
+            Console.WriteLine("\t |SEMESTER \t GPA \t CALCULATOR|.v01");
+            Console.WriteLine("\t---------------------------------------------\n");
+
+        }
         public void DisplaySettingsPage()
         {
-            _.setUserInSettingsPage(true);
+            _AppState.setUserInSettingsPage(true);
             Console.Clear();
-            while (_.getUserInSettingsPage())
+            while (_AppState.getUserInSettingsPage())
             {
-                Console.WriteLine("\t_____________________________________________");
-                Console.WriteLine("\t |SEMESTER \t GPA \t CALCULATOR|.v01");
-                Console.WriteLine("\t---------------------------------------------\n");
-
+                DisplayBanner();                
                 Console.WriteLine("Settings Page"
                     +
                     "\n * Return To Main Menu [E] *");
                 string next = Console.ReadLine();
                 if (next == "E")
                 {
-                    _.setUserInSettingsPage(false);
+                    _AppState.setUserInSettingsPage(false);
                 }
                 else
                 {
@@ -112,22 +115,19 @@ namespace MyCustomApplication.Runtime
         }
         public void DisplayAboutPage()
         {
-            _.setUserInAboutPage(true);
+            _AppState.setUserInAboutPage(true);
             Console.Clear();
 
-            while (_.getUserInAboutPage())
+            while (_AppState.getUserInAboutPage())
             {
-                Console.WriteLine("\t_____________________________________________");
-                Console.WriteLine("\t |SEMESTER \t GPA \t CALCULATOR|.v01");
-                Console.WriteLine("\t---------------------------------------------\n");
-
+                DisplayBanner();
                 Console.WriteLine("About Page"
                     +
                     "\n * Return To Main Menu [E] *");
                 string next = Console.ReadLine();
                 if (next == "E")
                 {
-                    _.setUserInAboutPage(false);
+                    _AppState.setUserInAboutPage(false);
                 }
                 else {
                     Console.WriteLine("invalid Option!!");
@@ -137,12 +137,17 @@ namespace MyCustomApplication.Runtime
             }
 
         }
-        public void recordUserData()
+        void viewData()
         {
-            _.setRecordingUserData(true);
+             
+        }
+         void recordUserData()
+        {
+            _AppState.setRecordingUserData(true);
             Console.Clear();
-            while(_.getUserInSession() && _.getIsUserInGradeCalculator() && _.getRecordingUserData())
+            while(_AppState.getUserInSession() && _AppState.getIsUserInGradeCalculator() && _AppState.getRecordingUserData())
             {
+                DisplayBanner();
                 Console.WriteLine("Enter Name: ");
                 string name = Console.ReadLine();
                 Console.WriteLine("Enter Level: ");
@@ -168,12 +173,14 @@ namespace MyCustomApplication.Runtime
                     Console.WriteLine("Code: {0}, Units: {1} , Title: {2} ,Score: {3} ", Target.GetCourseCode(),Target.GetNumberOfUnits(), Target.GetFullCourseName(),Target.GetScore());
 
                 }
+                //what if we saved that exact data to the application state.??
                 Console.WriteLine("Type [S] to finish recording Data");
 
                 string nextOp = Console.ReadLine();
                 if (nextOp == "S")
                 {
-                    _.setRecordingUserData(false);
+                    _AppState.setRecordingUserData(false);
+                    //connect  and save to database here
                 }
 
             }
